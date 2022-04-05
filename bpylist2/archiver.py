@@ -1,3 +1,4 @@
+import re
 import sys
 from typing import Mapping, Dict
 
@@ -140,6 +141,11 @@ class ArchivedObject:
     """
 
     def __init__(self, obj, unarchiver):
+        obj = {
+            re.sub(
+                r'\.[a-z_]', lambda m: m.group(0)[1:].upper(), k
+            ) if not k.startswith('NS.') else k: v for k, v in obj.items()
+        }
         self.object = obj
         self._unarchiver = unarchiver
 
